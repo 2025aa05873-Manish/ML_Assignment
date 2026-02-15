@@ -265,49 +265,6 @@ print(X_test.head())
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
-
-def preprocess_data(df):
-    df = df.copy()
-
-    # -----------------------------
-    # 1. Handle missing values
-    # -----------------------------
-    imputer = SimpleImputer(strategy='median')
-    df_imputed = pd.DataFrame(imputer.fit_transform(df), columns=df.columns)
-
-    # -----------------------------
-    # 2. One-hot encode categorical columns
-    # -----------------------------
-    categorical_cols = df_imputed.select_dtypes(include='object').columns.tolist()
-
-    for col in ['Ind_ID', 'label']:
-        if col in categorical_cols:
-            categorical_cols.remove(col)
-
-    df_encoded = pd.get_dummies(df_imputed, columns=categorical_cols, drop_first=True)
-
-    # -----------------------------
-    # 3. Split features and target
-    # -----------------------------
-    X = df_encoded.drop(columns=['label', 'Ind_ID'])
-    y = df_encoded['label']
-
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42, stratify=y
-    )
-
-    # -----------------------------
-    # 4. Scale numerical features
-    # -----------------------------
-    scaler = StandardScaler()
-    num_cols = X_train.select_dtypes(include=['int64', 'float64']).columns
-
-    X_train[num_cols] = scaler.fit_transform(X_train[num_cols])
-    X_test[num_cols] = scaler.transform(X_test[num_cols])
-
-    return X_train, X_test, y_train, y_test
-
-
 from sklearn.linear_model import LogisticRegression
 
 # Initialize the Logistic Regression model
@@ -363,6 +320,7 @@ print(f"Precision: {precision:.4f}")
 print(f"Recall: {recall:.4f}")
 print(f"F1 Score: {f1:.4f}")
 print(f"Matthews Correlation Coefficient (MCC): {mcc:.4f}")
+
 
 
 
