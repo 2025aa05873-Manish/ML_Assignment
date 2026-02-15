@@ -6,4 +6,5 @@ matplotlib
 seaborn
 xgboost
 nbimporter
+nbformat
 
