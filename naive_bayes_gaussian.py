@@ -36,21 +36,6 @@ from sklearn.preprocessing import MinMaxScaler
 # In[2]:
 
 
-from google.colab import drive
-
-# Mount Google Drive
-drive.mount('/content/drive')
-# List top-level contents of your Drive
-print(os.listdir("/content/drive/My Drive"))
-# Drill down step by step
-print(os.listdir("/content/drive/My Drive/"))
-print(os.listdir("/content/drive/My Drive/ML_Assignment2_Data"))
-# Access files
-data_path = '/content/drive/My Drive/ML_Assignment2_Data/'
-
-#df = pd.read_csv(data_path)
-
-
 # # Task
 # Load the 'Credit_card.csv' and 'Credit_card_label.csv' datasets from "/content/drive/My Drive/ML_Assignment2_Data/", preprocess the data, build and train a Logistic Regression model, and then evaluate its performance using Accuracy, AUC Score, Precision, Recall, F1 Score, and Matthews Correlation Coefficient.
 
@@ -68,8 +53,8 @@ data_path = '/content/drive/My Drive/ML_Assignment2_Data/'
 # In[3]:
 
 
-df_card = pd.read_csv(data_path + 'Credit_card.csv')
-df_label = pd.read_csv(data_path + 'Credit_card_label.csv')
+df_card = pd.read_csv('Credit_card.csv')
+df_label = pd.read_csv('Credit_card_label.csv')
 
 # Merge the two dataframes
 df_merged = pd.merge(df_card, df_label, on='Ind_ID', how='inner')
@@ -85,14 +70,14 @@ print(df_merged.head())
 # In[4]:
 
 
-display(df_merged.head())
+#display(df_merged.head())
 
 
 # In[5]:
 
 
-df_card = pd.read_csv(data_path + 'Credit_card.csv')
-df_label = pd.read_csv(data_path + 'Credit_card_label.csv')
+df_card = pd.read_csv('Credit_card.csv')
+df_label = pd.read_csv('Credit_card_label.csv')
 
 # Merge the two dataframes
 df_merged = pd.merge(df_card, df_label, on='Ind_ID', how='inner')
@@ -298,4 +283,5 @@ print(f"Precision: {precision_nb:.4f}")
 print(f"Recall: {recall_nb:.4f}")
 print(f"F1 Score: {f1_nb:.4f}")
 print(f"Matthews Correlation Coefficient (MCC): {mcc_nb:.4f}")
+
 
