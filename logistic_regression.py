@@ -274,7 +274,8 @@ log_reg_model.fit(X_train, y_train)
 
 print("Logistic Regression model trained successfully.")
 
-
+def get_model(): 
+    return LogisticRegression(random_state=42, solver='liblinear')
 # ## Evaluate Model
 # 
 # ### Subtask:
@@ -318,6 +319,7 @@ print(f"Precision: {precision:.4f}")
 print(f"Recall: {recall:.4f}")
 print(f"F1 Score: {f1:.4f}")
 print(f"Matthews Correlation Coefficient (MCC): {mcc:.4f}")
+
 
 
 
