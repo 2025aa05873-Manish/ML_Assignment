@@ -1,29 +1,32 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.naive_bayes import GaussianNB, MultinomialNB
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import LabelEncoder
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# Try importing XGBoost
-try:
-    from xgboost import XGBClassifier
-    xgb_available = True
-except ImportError:
-    xgb_available = False
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.preprocessing import LabelEncoder
+
+# Import notebooks as modules
+import nbimporter
+
+# Assuming you have six notebooks in your GitHub repo:
+# logistic_regression.ipynb, decision_tree.ipynb, knn.ipynb,
+# naive_bayes_gaussian.ipynb, random_forest.ipynb, xgboost_model.ipynb
+
+import logistic_regression
+import decision_tree
+import knn
+import naive_bayes_gaussian
+import random_forest
+import xgboost_model
 
 # -------------------------------
 # Streamlit App
 # -------------------------------
 st.title("ML Model Evaluation App 🎯")
-st.write("Upload a CSV dataset, choose a model, and view evaluation metrics.")
+st.write("Upload a CSV dataset, choose a model (from GitHub notebooks), and view evaluation metrics.")
 
 # 1. Dataset upload
 uploaded_file = st.file_uploader("Upload your CSV file (small test data only)", type=["csv"])
@@ -34,62 +37,48 @@ if uploaded_file is not None:
 
         st.subheader("Dataset Summary")
         st.write(f"Rows: {data.shape[0]}, Columns: {data.shape[1]}")
+        st.write(data.head())
 
-        # Warn if dataset is too large for Streamlit Cloud free tier
-        if data.shape[0] > 5000:
-            st.warning("⚠️ Dataset has more than 5000 rows. Consider uploading a smaller test dataset for Streamlit Cloud free tier.")
-
-        # Check column count
         if data.shape[1] < 2:
             st.error("Dataset must have at least one feature column and one target column.")
         else:
-            st.subheader("Preview of Uploaded Dataset")
-            st.write(data.head())
-
             # Split features and target
             X = data.iloc[:, :-1]
             y = data.iloc[:, -1]
 
-            # Checkbox for preprocessing
-            apply_preprocessing = st.checkbox("Apply preprocessing (encode categorical features/target)", value=True)
+            # Encode target if categorical
+            if y.dtype == 'object':
+                y = LabelEncoder().fit_transform(y)
 
-            if apply_preprocessing:
-                if y.dtype == 'object':
-                    y = LabelEncoder().fit_transform(y)
-                X = pd.get_dummies(X)
+            # One-hot encode categorical features
+            X = pd.get_dummies(X)
 
             # Train-test split
             X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
             # 2. Model selection dropdown
-            model_options = [
+            model_choice = st.selectbox("Select a model:", [
                 "Logistic Regression",
                 "Decision Tree Classifier",
                 "K-Nearest Neighbor Classifier",
                 "Naive Bayes - Gaussian",
-                "Naive Bayes - Multinomial",
                 "Random Forest",
-            ]
-            if xgb_available:
-                model_options.append("XGBoost")
+                "XGBoost"
+            ])
 
-            model_choice = st.selectbox("Select a model:", model_options)
-
-            # Model initialization
+            # Call respective notebook functions
             if model_choice == "Logistic Regression":
-                model = LogisticRegression(max_iter=200)
+                model = logistic_regression.get_model()
             elif model_choice == "Decision Tree Classifier":
-                model = DecisionTreeClassifier()
+                model = decision_tree.get_model()
             elif model_choice == "K-Nearest Neighbor Classifier":
-                model = KNeighborsClassifier()
+                model = knn.get_model()
             elif model_choice == "Naive Bayes - Gaussian":
-                model = GaussianNB()
-            elif model_choice == "Naive Bayes - Multinomial":
-                model = MultinomialNB()
+                model = naive_bayes_gaussian.get_model()
             elif model_choice == "Random Forest":
-                model = RandomForestClassifier(n_estimators=100)
-            elif model_choice == "XGBoost" and xgb_available:
-                model = XGBClassifier(use_label_encoder=False, eval_metric="logloss")
+                model = random_forest.get_model()
+            elif model_choice == "XGBoost":
+                model = xgboost_model.get_model()
 
             # Train model
             model.fit(X_train, y_train)
@@ -110,7 +99,9 @@ if uploaded_file is not None:
 
             st.subheader("Classification Report")
             st.text(classification_report(y_test, y_pred))
+
     except Exception as e:
         st.error(f"Error reading file: {e}")
 else:
     st.info("Please upload a CSV file to proceed.")
+
