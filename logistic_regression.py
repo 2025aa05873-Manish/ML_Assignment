@@ -74,8 +74,8 @@ print(df_merged.head())
 # In[6]:
 
 
-df_card = pd.read_csv(data_path + 'Credit_card.csv')
-df_label = pd.read_csv(data_path + 'Credit_card_label.csv')
+df_card = pd.read_csv('Credit_card.csv')
+df_label = pd.read_csv('Credit_card_label.csv')
 
 # Merge the two dataframes
 df_merged = pd.merge(df_card, df_label, on='Ind_ID', how='inner')
@@ -318,6 +318,7 @@ print(f"Precision: {precision:.4f}")
 print(f"Recall: {recall:.4f}")
 print(f"F1 Score: {f1:.4f}")
 print(f"Matthews Correlation Coefficient (MCC): {mcc:.4f}")
+
 
 
 
