@@ -284,4 +284,12 @@ print(f"Recall: {recall_nb:.4f}")
 print(f"F1 Score: {f1_nb:.4f}")
 print(f"Matthews Correlation Coefficient (MCC): {mcc_nb:.4f}")
 
+from sklearn.naive_bayes import GaussianNB
+
+def get_model(X_train=None, y_train=None):
+    model = GaussianNB()
+    if X_train is not None and y_train is not None:
+        model.fit(X_train, y_train)
+    return model
+
 
