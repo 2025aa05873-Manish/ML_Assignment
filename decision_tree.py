@@ -82,8 +82,8 @@ print(df_merged.head())
 # In[6]:
 
 
-df_card = pd.read_csv(data_path + 'Credit_card.csv')
-df_label = pd.read_csv(data_path + 'Credit_card_label.csv')
+df_card = pd.read_csv('Credit_card.csv')
+df_label = pd.read_csv('Credit_card_label.csv')
 
 # Merge the two dataframes
 df_merged = pd.merge(df_card, df_label, on='Ind_ID', how='inner')
@@ -304,4 +304,5 @@ print(f"Matthews Correlation Coefficient (MCC): {mcc_dt:.4f}")
 # F1 Score (0.4638): The F1 score is the harmonic mean of precision and recall. It provides a single score that balances both precision and recall. An F1 score of 0.4638 suggests a moderate balance between catching all positive cases and being accurate in those predictions. It's especially useful when you have an uneven class distribution.
 # 
 # Matthews Correlation Coefficient (MCC) (0.3967): MCC is a more robust and informative measure that takes into account true positives, true negatives, false positives, and false negatives. It is generally considered a balanced measure even if the classes are of very different sizes. The value ranges from -1 (total disagreement) to +1 (perfect prediction), with 0 indicating random prediction. An MCC of 0.3967 indicates a fair to good prediction quality.
+
 
