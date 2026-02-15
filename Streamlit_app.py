@@ -15,12 +15,12 @@ import nbimporter
 # logistic_regression.ipynb, decision_tree.ipynb, knn.ipynb,
 # naive_bayes_gaussian.ipynb, random_forest.ipynb, xgboost_model.ipynb
 
-import logistic_regression
-import decision_tree
-import knn
-import naive_bayes_gaussian
-import random_forest
-import xgboost_model
+import model/logistic_regression
+import model/decision_tree
+import model/knn
+import model/naive_bayes_gaussian
+import model/random_forest
+import model/xgboost_model
 
 # -------------------------------
 # Streamlit App
