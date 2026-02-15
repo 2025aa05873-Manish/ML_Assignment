@@ -74,7 +74,7 @@ print(df_merged.head())
 # In[4]:
 
 
-display(df_merged.head())
+#display(df_merged.head())
 
 
 # In[5]:
@@ -290,5 +290,6 @@ print(f"Precision: {precision_rf:.4f}")
 print(f"Recall: {recall_rf:.4f}")
 print(f"F1 Score: {f1_rf:.4f}")
 print(f"Matthews Correlation Coefficient (MCC): {mcc_rf:.4f}")
+
 
 
