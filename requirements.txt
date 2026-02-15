@@ -8,3 +8,5 @@ xgboost
 nbimporter
 nbformat
 ipython
+statsmodels
+
